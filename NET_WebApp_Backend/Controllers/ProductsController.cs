@@ -1,9 +1,11 @@
 ﻿using Dapper;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NET_WebApp_Backend.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace NET_WebApp_Backend.Controllers
@@ -38,9 +40,18 @@ namespace NET_WebApp_Backend.Controllers
         }
 
         [HttpPost]
-        [Route("crear")]
+        [Route("")]
         public async Task<ActionResult> Create([FromBody] Product product)
         {
+
+            ProductValidator validator = new ProductValidator();
+
+            ValidationResult result = validator.Validate(product);
+            if (!result.IsValid)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, null);
+            }
+
             return Ok();
         }
 
@@ -98,13 +109,13 @@ namespace NET_WebApp_Backend.Controllers
 
         [HttpPost]
         [Route("product-multimedia")]
-        public async Task<ActionResult> UploadPhotoAndData([FromRoute] int id,[FromForm] ProductMultimedia productMultimedia)
+        public async Task<ActionResult> UploadPhotoAndData([FromRoute] int id, [FromForm] ProductMultimedia productMultimedia)
         {
             string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "uploads");
             Product product = new Product();
             product.Id = productMultimedia.Id;
             product.Title = productMultimedia.Title;
-            
+
             foreach (IFormFile file in productMultimedia.Images)
             {
                 if (file.Length > 0)
