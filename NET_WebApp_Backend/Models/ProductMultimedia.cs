@@ -6,9 +6,10 @@ namespace NET_WebApp_Backend.Models
     {
         [Required]
         [Range(0,100)]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         
         [Required]
+        [Display(Name = "Título")]
         public string Title { get; set; }
         
         [Required]

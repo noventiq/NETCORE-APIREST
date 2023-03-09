@@ -102,7 +102,7 @@ namespace NET_WebApp_Backend.Controllers
         {
             string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "uploads");
             Product product = new Product();
-            product.Id = productMultimedia.Id;
+            product.Id = productMultimedia.Id.Value;
             product.Title = productMultimedia.Title;
             
             foreach (IFormFile file in productMultimedia.Images)
