@@ -81,6 +81,29 @@ namespace NET_WebApp_Backend.Controllers
         [Route("{id}/fotos")]
         public async Task<ActionResult> UploadPhoto([FromRoute] int id, IList<IFormFile> files)
         {
+            String message = "";
+            List<string> extensionesPermitidas = new List<string>() { ".docx", ".pdf" };
+            foreach (IFormFile file in files)
+            {
+                if (file.Length == 0)
+                {
+                    message = string.Format("El archivo {0} está vacío", file.FileName);
+                    break;
+                }
+
+
+                if (!extensionesPermitidas.Contains(Path.GetExtension(file.FileName)))
+                {
+                    message = string.Format("El archivo {0} con esta extensión no está permitida", file.FileName);
+                    break;
+                }
+            }
+
+            if (message.Length > 0)
+            {
+                return BadRequest(message);
+            }
+
             string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "uploads");
             foreach (IFormFile file in files)
             {
@@ -98,13 +121,14 @@ namespace NET_WebApp_Backend.Controllers
 
         [HttpPost]
         [Route("product-multimedia")]
-        public async Task<ActionResult> UploadPhotoAndData([FromRoute] int id,[FromForm] ProductMultimedia productMultimedia)
+        [RequestSizeLimit(100000000)]
+        public async Task<ActionResult> UploadPhotoAndData([FromRoute] int id, [FromForm] ProductMultimedia productMultimedia)
         {
             string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "uploads");
             Product product = new Product();
             product.Id = productMultimedia.Id;
             product.Title = productMultimedia.Title;
-            
+
             foreach (IFormFile file in productMultimedia.Images)
             {
                 if (file.Length > 0)

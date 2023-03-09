@@ -7,6 +7,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.Configure<IISServerOptions>(x => {
+    x.MaxRequestBodySize = 1000;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
