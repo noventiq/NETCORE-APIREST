@@ -19,12 +19,4 @@ namespace NET_WebApp_Backend.Models
         public string UpdatedBy { get; set; }
         public List<string> Thumbnails { get; set; }
     }
-
-    public class ProductValidator : AbstractValidator<Product> 
-    {
-        public ProductValidator()
-        {
-            RuleFor(p => p.Title).NotNull().NotEmpty();
-        }
-    }
 }

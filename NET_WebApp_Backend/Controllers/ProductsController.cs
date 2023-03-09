@@ -41,16 +41,15 @@ namespace NET_WebApp_Backend.Controllers
 
         [HttpPost]
         [Route("")]
-        public async Task<ActionResult> Create([FromBody] Product product)
+        public async Task<ActionResult> Create([FromBody] RequestProduct product)
         {
 
-            ProductValidator validator = new ProductValidator();
+            RequestProductValidator validator = new RequestProductValidator();
 
             ValidationResult result = validator.Validate(product);
             if (!result.IsValid)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, null);
-            }
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
+
 
             return Ok();
         }
