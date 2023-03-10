@@ -14,12 +14,20 @@ namespace NET_WebApp_Backend.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        IConfiguration _configuration;
+        private IConfiguration _configuration;
         private IWebHostEnvironment _hostingEnvironment;
-        public ProductsController(IConfiguration configuration, IWebHostEnvironment environment)
+        private readonly ILogger<ProductsController> _logger;
+
+        public ProductsController(
+            IConfiguration configuration,
+            IWebHostEnvironment environment,
+            ILogger<ProductsController> logger
+            )
         {
             this._configuration = configuration;
             this._hostingEnvironment = environment;
+            this._logger = logger;
+            this._logger.LogInformation("Ingresó a controller {0}", this.GetType().Name);
         }
 
         [HttpGet]
@@ -74,14 +82,22 @@ namespace NET_WebApp_Backend.Controllers
         [Route("{id}/foto")]
         public async Task<ActionResult> UploadPhoto([FromRoute] int id, IFormFile file)
         {
-            string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "Uploads");
+            string uploads = Path.Combine(_hostingEnvironment.ContentRootPath, "Uploadsx");
 
             if (file.Length > 0)
             {
                 string filePath = Path.Combine(uploads, file.FileName);
                 using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await file.CopyToAsync(fileStream);
+                    try
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    catch (Exception ex)
+                    {
+                        this._logger.LogError(ex, "archivo: {0}", file.FileName);
+                        return StatusCode(StatusCodes.Status500InternalServerError, ex);
+                    }
                 }
             }
 
