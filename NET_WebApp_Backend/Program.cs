@@ -1,3 +1,4 @@
+using NET_WebApp_Backend.Middlewares;
 using NLog;
 using NLog.Web;
 
@@ -31,6 +32,8 @@ try
     app.UseHttpsRedirection();
 
     app.UseAuthorization();
+
+    app.UseTimeMiddleware();
 
     app.MapControllers();
 
