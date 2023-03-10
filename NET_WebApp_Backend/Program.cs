@@ -1,3 +1,4 @@
+using NET_WebApp_Backend;
 using NET_WebApp_Backend.Middlewares;
 using NLog;
 using NLog.Web;
@@ -20,6 +21,8 @@ try
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
+    var middlewareSettings = builder.Configuration.GetSection("MiddlewareSettings").Get<MiddlewareSettings>();
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
@@ -33,11 +36,45 @@ try
 
     app.UseAuthorization();
 
-    app.UseTimeMiddleware();
+
 
     app.MapControllers();
 
+
+    #region start middleware
+    app.Map("/map1", HandleMapTest1);
+
+    app.Map("/map2", HandleMapTest2);
+
+    app.Run(async context =>
+    {
+        await context.Response.WriteAsync("Hello from non-Map delegate.");
+    });
+
+    app.UseTimeMiddleware();
+
+    if (middlewareSettings.UseTimeLoggingMiddleware)
+        app.UseTimeLoggingMiddleware();
+
+    #endregion
+
     app.Run();
+
+    static void HandleMapTest1(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("Map Test 1");
+        });
+    }
+
+    static void HandleMapTest2(IApplicationBuilder app)
+    {
+        app.Run(async context =>
+        {
+            await context.Response.WriteAsync("Map Test 2");
+        });
+    }
 
 }
 catch (Exception exception)
