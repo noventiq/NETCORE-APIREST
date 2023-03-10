@@ -10,7 +10,9 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddJsonFile("appsettings.Local.json", true, true);
-    // Add services to the container.
+
+    builder.Services.ConfigureJWT(true);
+    //builder.Services.AddAuthenticationCore();
 
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -34,47 +36,46 @@ try
 
     app.UseHttpsRedirection();
 
+    app.UseAuthentication();
     app.UseAuthorization();
-
-
 
     app.MapControllers();
 
 
     #region start middleware
-    app.Map("/map1", HandleMapTest1);
+    //app.Map("/map1", HandleMapTest1);
 
-    app.Map("/map2", HandleMapTest2);
+    //app.Map("/map2", HandleMapTest2);
 
-    app.Run(async context =>
-    {
-        await context.Response.WriteAsync("Hello from non-Map delegate.");
-    });
+    //app.Run(async context =>
+    //{
+    //    await context.Response.WriteAsync("Hello from non-Map delegate.");
+    //});
 
-    app.UseTimeMiddleware();
+    //app.UseTimeMiddleware();
 
-    if (middlewareSettings.UseTimeLoggingMiddleware)
-        app.UseTimeLoggingMiddleware();
+    //if (middlewareSettings.UseTimeLoggingMiddleware)
+    //    app.UseTimeLoggingMiddleware();
 
     #endregion
 
     app.Run();
 
-    static void HandleMapTest1(IApplicationBuilder app)
-    {
-        app.Run(async context =>
-        {
-            await context.Response.WriteAsync("Map Test 1");
-        });
-    }
+    //static void HandleMapTest1(IApplicationBuilder app)
+    //{
+    //    app.Run(async context =>
+    //    {
+    //        await context.Response.WriteAsync("Map Test 1");
+    //    });
+    //}
 
-    static void HandleMapTest2(IApplicationBuilder app)
-    {
-        app.Run(async context =>
-        {
-            await context.Response.WriteAsync("Map Test 2");
-        });
-    }
+    //static void HandleMapTest2(IApplicationBuilder app)
+    //{
+    //    app.Run(async context =>
+    //    {
+    //        await context.Response.WriteAsync("Map Test 2");
+    //    });
+    //}
 
 }
 catch (Exception exception)
