@@ -21,7 +21,7 @@ try
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
-    var middlewareSettings = builder.Configuration.GetSection("MiddlewareSettings").Get<MiddlewareSettings>();
+    MiddlewareSettings middlewareSettings = builder.Configuration.GetSection("MiddlewareSettings").Get<MiddlewareSettings>();
 
     var app = builder.Build();
 
@@ -46,10 +46,10 @@ try
 
     app.Map("/map2", HandleMapTest2);
 
-    app.Run(async context =>
-    {
-        await context.Response.WriteAsync("Hello from non-Map delegate.");
-    });
+    //app.Run(async context =>
+    //{
+    //    await context.Response.WriteAsync("Hello from non-Map delegate.");
+    //});
 
     app.UseTimeMiddleware();
 

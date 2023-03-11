@@ -1,13 +1,14 @@
-﻿using System.Diagnostics;
+﻿using NET_WebApp_Backend.Controllers;
+using System.Diagnostics;
 
 namespace NET_WebApp_Backend.Middlewares
 {
     public class TimeLoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger _logger;
+        private readonly ILogger<TimeLoggingMiddleware> _logger;
 
-        public TimeLoggingMiddleware(RequestDelegate next, ILogger logger)
+        public TimeLoggingMiddleware(RequestDelegate next, ILogger<TimeLoggingMiddleware> logger)
         {
             _next = next;
             _logger = logger;

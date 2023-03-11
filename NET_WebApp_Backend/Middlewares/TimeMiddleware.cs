@@ -15,7 +15,15 @@
 
             if (context.Request.Query.Any(p => p.Key == "time"))
             {
-                await context.Response.WriteAsync(DateTime.Now.ToString());
+                try
+                {
+                    context.Response.Headers.Add("tiemp-duracion", "1");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    //throw;
+                }
             }
         }
     }
