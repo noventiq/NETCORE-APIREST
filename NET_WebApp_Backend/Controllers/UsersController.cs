@@ -10,7 +10,7 @@ using System.Text;
 
 namespace NET_WebApp_Backend.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
