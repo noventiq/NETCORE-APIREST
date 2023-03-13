@@ -362,6 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-!NET_WebApp_Backend/appsettings.json
-!NET_WebApp_Backend/appsettings.Development.json
-/NET_WebApp_Backend/appsettings.Local.json
+/NETCORE.API/appsettings.Local.json
