@@ -34,11 +34,12 @@ try
 
     builder.Services.AddScoped<ICustomConnection, CustomConnection>();
 
-    builder.Services.AddTransient<UserApp>();
+    //builder.Services.AddTransient<UserApp>();
     //builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-    builder.Services.AddTransient<ProductApp>();
+    builder.Services.AddScoped<ProductApp>();
     builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
 
     #endregion
 

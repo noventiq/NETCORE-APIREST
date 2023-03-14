@@ -33,7 +33,7 @@ namespace NETCORE.Infraestructure.Products
                 }
                 catch (Exception ex)
                 {
-                    throw new CustomException("Sucedió un error al realizar la operación", ex);
+                    throw new CustomException("Error al listar productos", ex);
                 }
             }
 
