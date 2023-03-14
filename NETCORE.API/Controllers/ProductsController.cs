@@ -8,7 +8,7 @@ using NETCORE.Shared;
 namespace NETCORE.API.Controllers
 {
     [Authorize]
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -45,6 +45,8 @@ namespace NETCORE.API.Controllers
 
         [HttpPost]
         [Route("")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Create([FromBody] RequestProduct product)
         {
 
@@ -54,18 +56,18 @@ namespace NETCORE.API.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, status);
             }
 
-            return Ok(status.Data);
+            return StatusCode(StatusCodes.Status201Created, status.Data);
         }
 
         [HttpPut]
-        [Route("actualiza/{id}")]
+        [Route("{id}")]
         public async Task<ActionResult> Update([FromRoute] int id, [FromBody] Product product)
         {
             return Ok();
         }
 
         [HttpDelete]
-        [Route("eliminar/{id}")]
+        [Route("{id}")]
         public async Task<ActionResult> Delete([FromRoute] int id)
         {
             return Ok();

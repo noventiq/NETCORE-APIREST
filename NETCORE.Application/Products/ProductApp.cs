@@ -60,6 +60,8 @@ namespace NETCORE.Application.Products
                 status.Errors = this.GetErrors(result.Errors);
             }
 
+            status.Data = new Product();
+
             return status;
         }
     }

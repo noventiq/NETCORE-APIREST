@@ -18,6 +18,7 @@ namespace NETCORE.Domain.Products.Domain
         public DateTime UpdatedAt { get; set; }
         public string UpdatedBy { get; set; }
         public List<string> Thumbnails { get; set; }
+        public decimal priceOffert { get; set; }
     }
 
     //public class ProductValidator : AbstractValidator<Product> 

@@ -20,7 +20,7 @@ namespace NETCORE.Domain.Products.DTO
     public class RequestVendor
     {
         public int Id { get; set; }
-        public int Name { get; set; }
+        public string Name { get; set; }
     }
 
     public class RequestProductValidator : AbstractValidator<RequestProduct>

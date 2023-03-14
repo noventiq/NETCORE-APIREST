@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
 using NETCORE.API.Authentication;
 using NETCORE.Application.Products;
 using NETCORE.Application.Users;
@@ -24,7 +26,49 @@ try
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Version = "v1",
+            Title = "API Rest Products",
+            Description = "Carrito de compras",
+            TermsOfService = new Uri("https://example.com/terms"),
+            Contact = new OpenApiContact
+            {
+                Name = "ANA",
+                Url = new Uri("https://example.com/contact")
+            },
+            License = new OpenApiLicense
+            {
+                Name = "Open Source GLP",
+                Url = new Uri("https://example.com/license")
+            },
+
+
+        });
+
+        // add JWT Authentication
+        var securityScheme = new OpenApiSecurityScheme
+        {
+            Name = "JWT Authentication",
+            Description = "Enter JWT Bearer token **_only_**",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer", // must be lower case
+            BearerFormat = "JWT",
+            Reference = new OpenApiReference
+            {
+                Id = JwtBearerDefaults.AuthenticationScheme,
+                Type = ReferenceType.SecurityScheme
+            }
+        };
+        options.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {securityScheme, new string[] { }}
+    });
+    });
 
     // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
@@ -46,7 +90,7 @@ try
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+    if (!app.Environment.IsProduction())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
