@@ -96,6 +96,8 @@ try
         app.UseSwaggerUI();
     }
 
+    app.UseWebSockets();
+
     app.UseHttpsRedirection();
 
     app.UseAuthentication();
