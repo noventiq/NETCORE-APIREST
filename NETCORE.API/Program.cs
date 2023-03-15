@@ -96,7 +96,14 @@ try
         app.UseSwaggerUI();
     }
 
-    app.UseWebSockets();
+    var webSocketOptions = new WebSocketOptions()
+    {
+        KeepAliveInterval = TimeSpan.FromSeconds(120),
+    };
+    //webSocketOptions.AllowedOrigins.Add("https://client.com");
+    //webSocketOptions.AllowedOrigins.Add("https://www.client.com");
+
+    app.UseWebSockets(webSocketOptions);
 
     app.UseHttpsRedirection();
 

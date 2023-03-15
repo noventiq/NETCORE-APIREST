@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NETCORE.Infraestructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NETCORE.Shared", "NETCORE.Shared\NETCORE.Shared.csproj", "{2B736A0B-7DF4-4316-BA34-3DDB3794DFB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NETCORE.WebsocketClient", "NETCORE.WebsocketClient\NETCORE.WebsocketClient.csproj", "{D8725318-60DA-4008-A389-42DA22E42EA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{2B736A0B-7DF4-4316-BA34-3DDB3794DFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B736A0B-7DF4-4316-BA34-3DDB3794DFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B736A0B-7DF4-4316-BA34-3DDB3794DFB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8725318-60DA-4008-A389-42DA22E42EA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8725318-60DA-4008-A389-42DA22E42EA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8725318-60DA-4008-A389-42DA22E42EA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8725318-60DA-4008-A389-42DA22E42EA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

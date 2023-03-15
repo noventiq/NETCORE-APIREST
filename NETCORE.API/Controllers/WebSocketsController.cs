@@ -21,9 +21,17 @@ namespace NETCORE.API.Controllers
         {
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
-                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                _logger.Log(LogLevel.Information, "WebSocket connection established");
-                await Echo(webSocket);
+                //using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                //_logger.Log(LogLevel.Information, "WebSocket connection established");
+                //await Echo(webSocket);
+                using (var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync())
+                {
+                    while (true)
+                    {
+                        await webSocket.SendAsync(Encoding.ASCII.GetBytes($"Test - {DateTime.Now}"), WebSocketMessageType.Text, true, CancellationToken.None);
+                        await Task.Delay(1000);
+                    }
+                }
             }
             else
             {
