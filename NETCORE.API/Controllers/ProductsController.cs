@@ -43,6 +43,19 @@ namespace NETCORE.API.Controllers
             return Ok(status.Data);
         }
 
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult> GetById([FromRoute] int id)
+        {
+            StatusResponse<Product> status = await this._productApp.GetById(id);
+
+            if (!status.Success)
+                return StatusCode(StatusCodes.Status500InternalServerError, status);
+
+            return Ok(status.Data);
+        }
+
         [HttpPost]
         [Route("")]
         [ProducesResponseType(StatusCodes.Status201Created)]

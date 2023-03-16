@@ -10,5 +10,6 @@ namespace NETCORE.Domain.Products.Interfaces
     public interface IProductRepository
     {
         Task<IEnumerable<Product>> List();
+        Task<Product> GetById(int id);
     }
 }

@@ -21,6 +21,45 @@ namespace NETCORE.Infraestructure.Products
             _connection = connection;
         }
 
+        public async Task<Product> GetById(int id)
+        {
+            Product item = null;
+
+            using (var scope = await _connection.BeginConnection())
+            {
+                try
+                {
+                    item = await scope.QuerySingleAsync<Product>("USP_SELECT_PRODUCT_BY_ID", new { id = id }, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception ex)
+                {
+                    throw new CustomException("Error al listar productos", ex);
+                }
+            }
+
+            return item;
+        }
+
+        //public async Task<IEnumerable<Product>> List()
+        //{
+        //    IEnumerable<Product> lista;
+
+        //    using (var scope = await _connection.BeginConnection())
+        //    {
+        //        try
+        //        {
+        //            lista = await scope.QueryAsync<Product>("SELECT * FROM Products", commandType: CommandType.Text);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new CustomException("Error al listar productos", ex);
+        //        }
+        //    }
+
+        //    return lista;
+        //}
+
+
         public async Task<IEnumerable<Product>> List()
         {
             IEnumerable<Product> lista;
@@ -29,7 +68,7 @@ namespace NETCORE.Infraestructure.Products
             {
                 try
                 {
-                    lista = await scope.QueryAsync<Product>("SELECT * FROM Products", commandType: CommandType.Text);
+                    lista = await scope.QueryAsync<Product>("USP_SELECT_PRODUCTS", commandType: CommandType.StoredProcedure);
                 }
                 catch (Exception ex)
                 {

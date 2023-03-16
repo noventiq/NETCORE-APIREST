@@ -8,6 +8,7 @@ using NETCORE.Domain.Products.Interfaces;
 using NETCORE.Domain.Users.Interfaces;
 using NETCORE.Infraestructure.Common;
 using NETCORE.Infraestructure.Products;
+using NETCORE.Infraestructure.Users;
 using NLog;
 using NLog.Web;
 
@@ -78,8 +79,8 @@ try
 
     builder.Services.AddScoped<ICustomConnection, CustomConnection>();
 
-    //builder.Services.AddTransient<UserApp>();
-    //builder.Services.AddScoped<IUserRepository, UserRepository>();
+    builder.Services.AddScoped<UserApp>();
+    builder.Services.AddScoped<IUserRepository, UserRepository>();
 
     builder.Services.AddScoped<ProductApp>();
     builder.Services.AddScoped<IProductRepository, ProductRepository>();

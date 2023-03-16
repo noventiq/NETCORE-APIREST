@@ -173,4 +173,5 @@ insert into users_profiles(user_id, profile_id)
 values
 (1,1),
 (2,2),
-(3,2);
+(3,2),
+(3,1);

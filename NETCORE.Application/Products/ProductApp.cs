@@ -64,5 +64,10 @@ namespace NETCORE.Application.Products
 
             return status;
         }
+
+        public async Task<StatusResponse<Product>> GetById(int id)
+        {
+            return await this.complexProcess(() => _productRepository.GetById(id), "Satisfactorio");
+        }
     }
 }
