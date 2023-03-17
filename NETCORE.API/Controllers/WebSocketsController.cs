@@ -28,7 +28,7 @@ namespace NETCORE.API.Controllers
                 {
                     while (true)
                     {
-                        await webSocket.SendAsync(Encoding.ASCII.GetBytes($"Test - {DateTime.Now}"), WebSocketMessageType.Text, true, CancellationToken.None);
+                        await webSocket.SendAsync(Encoding.ASCII.GetBytes("{ \"now\": \"" + DateTime.Now + "\" }"), WebSocketMessageType.Text, true, CancellationToken.None);
                         await Task.Delay(1000);
                     }
                 }
@@ -58,6 +58,52 @@ namespace NETCORE.API.Controllers
             }
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
             _logger.Log(LogLevel.Information, "WebSocket connection closed");
+        }
+
+        [HttpGet("/time")]
+        public async Task GetTime()
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                using (var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync())
+                {
+                    bool isConnectionOpen = true;
+                    var buffer = new byte[1024 * 4];
+                    Task.Run(async () =>
+                    {
+                        WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+                        while (!result.CloseStatus.HasValue)
+                        {
+                            string message = Encoding.UTF8.GetString(buffer).Replace("\0", "");
+                            var serverMsg = Encoding.UTF8.GetBytes(message);
+
+                            await webSocket.SendAsync(new ArraySegment<byte>(serverMsg, 0, serverMsg.Length), result.MessageType, result.EndOfMessage, CancellationToken.None);
+
+                            result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                        }
+
+                        if (result.CloseStatus.HasValue)
+                            isConnectionOpen = false;
+
+                    });
+
+                    while (isConnectionOpen)
+                    {
+                        await webSocket.SendAsync(Encoding.ASCII.GetBytes("{ \"now\": \"" + DateTime.Now + "\" }"), WebSocketMessageType.Text, true, CancellationToken.None);
+                        await Task.Delay(1000);
+                    }
+
+                    if (!isConnectionOpen)
+                    {
+                        await webSocket.CloseAsync(WebSocketCloseStatus.Empty, "Cerrado", CancellationToken.None);
+                    }
+                }
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = 400;
+            }
         }
     }
 }
