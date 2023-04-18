@@ -4,6 +4,7 @@ using NETCORE.Application.Products;
 using NETCORE.Domain.Products.Domain;
 using NETCORE.Domain.Products.DTO;
 using NETCORE.Shared;
+using System.Security.Claims;
 
 namespace NETCORE.API.Controllers
 {
@@ -35,8 +36,11 @@ namespace NETCORE.API.Controllers
         [Route("")]
         public async Task<ActionResult> List()
         {
+            ClaimsIdentity currentUser = (ClaimsIdentity)this.User.Identity;
+            string name = currentUser.Claims.Where(x => x.Type == "name")?.FirstOrDefault()?.Value;
+            await Console.Out.WriteLineAsync(name);
             StatusResponse<IEnumerable<Product>> status = await this._productApp.List();
-
+            
             if (!status.Success)
                 return StatusCode(StatusCodes.Status500InternalServerError, status);
 
